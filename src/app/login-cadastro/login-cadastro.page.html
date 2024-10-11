@@ -1,0 +1,143 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goToTab1()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div style="text-align: center; margin-top: 10px;">
+    <ion-icon name="person-circle" style="font-size: 200px;"></ion-icon>
+  </div>
+
+  <div id="input-item">
+    <ion-input
+      label="Email"
+      labelPlacement="stacked"
+      type="email"
+      placeholder="Digite seu email"
+      [(ngModel)]="email">
+    </ion-input>
+  </div>
+  
+  <div id="input-item">
+    <ion-input
+      label="Password"
+      labelPlacement="stacked"
+      type="password"
+      placeholder="Digite sua senha"
+      [(ngModel)]="password">
+      <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+    </ion-input>
+  </div>
+
+  <ion-item class="remember-forgot">
+    <ion-label class="remember-label" (click)="toggleCheckbox()">
+      <ion-checkbox id="remember-me" [(ngModel)]="rememberMe" slot="start"></ion-checkbox>
+      Lembrar de mim
+    </ion-label>
+    
+    <ion-button fill="clear" slot="end" routerLink="#" class="forgot-password">
+      Esqueceu a senha?
+    </ion-button>
+  </ion-item>
+
+  <!-- Botão de envio -->
+  <ion-button expand="block" (click)="submitLogin()" class="custom-button">
+    Entrar
+  </ion-button>
+
+  <div style="text-align: center; margin-top: 20px;">
+    <p>Não tem uma conta? <a id="open-modal" (click)="openSignupModal()" style="color: inherit; text-decoration: underline; cursor: pointer;">Cadastre-se</a></p>
+  </div>
+
+  <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="cancel()">
+              <ion-icon name="chevron-back-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+          <ion-title>Crie sua conta</ion-title>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="ion-padding">
+        <div class="modal-image-container">
+          <div style="text-align: center; margin-top: 10px;">
+            <ion-icon name="person-circle" style="font-size: 150px; margin-bottom: 30px;"></ion-icon>
+          </div>
+          <h1 class="modal-title">Cadastre-se</h1>
+        </div>
+
+        <div id="input-item">
+          <ion-input
+            label="Nome completo"
+            type="text"
+            labelPlacement="stacked"
+            placeholder="Digite seu nome completo"
+            [(ngModel)]="signupFullName"
+            [counter]="true"
+            maxlength="80">
+          </ion-input>
+        </div>  
+        
+        <div id="input-item">
+          <ion-input
+            label="CPF"
+            labelPlacement="stacked"
+            placeholder="Digite seu CPF"
+            [(ngModel)]="signupCpf"
+            [counter]="true"
+            maxlength="11">
+          </ion-input>
+        </div>
+
+        <div id="input-item">    
+          <ion-input
+            label="Email"
+            type="email"
+            labelPlacement="stacked"
+            placeholder="Digite seu email"
+            [(ngModel)]="signupEmail"
+            [counter]="true"
+            maxlength="64">
+          </ion-input>
+        </div>
+
+        <div id="input-item">  
+          <ion-input
+            label="Celular"
+            labelPlacement="stacked"
+            placeholder="Digite seu celular"
+            [(ngModel)]="signupPhone"
+            [counter]="true"
+            maxlength="11">
+          </ion-input>
+        </div>
+
+        <div id="input-item">  
+          <ion-input
+            label="Senha"
+            labelPlacement="stacked"
+            placeholder="Digite sua senha"
+            [(ngModel)]="signupPassword"
+            [counter]="true"
+            maxlength="20">
+          </ion-input>
+        </div>
+
+        <!-- Botão de cadastro -->
+        <ion-button expand="block" (click)="submitSignup()" class="custom-button" style="margin-top: 20px;">
+          Cadastrar
+        </ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

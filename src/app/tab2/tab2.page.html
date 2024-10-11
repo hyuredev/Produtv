@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Calendário de Feriados</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="calendar">
+    <div class="month" *ngFor="let month of getMonths(); let i = index">
+      <h2>{{ month }}</h2>
+      <ion-list>
+        <ion-item *ngFor="let holiday of getHolidaysByMonth(i)">
+          <ion-label>
+            <h3>{{ holiday.name }}</h3>
+            <p>{{ holiday.date }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item *ngIf="getHolidaysByMonth(i).length === 0">
+          <ion-label>Nenhum feriado encontrado.</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+</ion-content>

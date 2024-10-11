@@ -1,0 +1,19 @@
+.calendar {
+    display: flex;
+    flex-direction: column; /* Um mês por linha */
+    margin: 10px;
+  }
+  
+  .month {
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .upcoming-holidays {
+    margin-top: 20px;
+    border-top: 2px solid #ccc;
+    padding-top: 10px;
+  }

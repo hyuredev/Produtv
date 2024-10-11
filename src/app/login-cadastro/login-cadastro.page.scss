@@ -1,0 +1,44 @@
+ion-input {
+    width: 90%; /* Faz o input ocupar toda a largura disponível */
+  }
+
+#input-item {
+    font-size: 1.1rem; /* Aumenta a fonte dos inputs */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+ion-label {
+    font-size: 1.1rem; /* Aumenta a fonte do texto do label */
+    }
+
+.remember-label {
+    display: flex;
+    align-items: center; /* Alinha verticalmente */
+    }
+  
+.remember-label ion-checkbox {
+    margin-right: 8px; /* Espaço entre o checkbox e o texto */
+    }
+
+.modal-image-container {
+    position: relative;
+    text-align: center;
+    }
+  
+.modal-title {
+    position: absolute;
+    top: 130px; /* Ajuste conforme necessário para mover o título para baixo */
+    left: 50%;
+    transform: translateX(-50%); /* Centraliza o título horizontalmente */
+    color: #000; /* Ou outra cor que você preferir */
+    z-index: 10; /* Garante que o título fique acima de outros elementos */
+    font-size: 24px; /* Ajuste o tamanho da fonte conforme necessário */
+    }
+
+.custom-button {
+    margin-top: 20px;
+    height: 50px; /* Ajuste a altura conforme necessário */
+    }
+    

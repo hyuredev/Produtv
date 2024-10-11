@@ -1,0 +1,22 @@
+.task-item {
+    margin-bottom: 10px; // Adiciona um espaço de 10px entre as tarefas
+  }
+  
+  .low-priority {
+    border: 2px solid lightblue;
+    border-radius: 8px;
+  }
+  
+  .medium-priority {
+    border: 2px solid purple;
+    border-radius: 8px;
+  }
+  
+  .high-priority {
+    border: 2px solid red;
+    border-radius: 8px;
+  }
+  
+  .custom-button {
+    height: 50px; /* Ajuste a altura conforme necessário */
+    }

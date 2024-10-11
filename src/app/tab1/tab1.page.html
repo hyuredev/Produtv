@@ -1,0 +1,90 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title slot="start">Atividades</ion-title>
+    <img src="assets/img/bicho.png" alt="Logo" style="max-height: 35px; margin-left: -19.5px;"/>
+    <ion-buttons slot="end">
+      <ion-button (click)="openProfile()">
+        <ion-icon name="person-circle-outline" style="font-size: 42px; margin-top: 2px;"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-button (click)="openModal()" expand="block">Criar Tarefa</ion-button>
+  
+  <ion-list>
+    <ion-item *ngFor="let task of tasks" class="task-item" 
+              [ngClass]="{
+                'low-priority': task.priority === 'baixa',
+                'medium-priority': task.priority === 'media',
+                'high-priority': task.priority === 'alta'
+              }" 
+              button detail="true" detail-icon="caret-forward-outline">
+      <ion-label>
+        <h3>{{ task.title }}</h3>
+        <p>Tempo total: {{ task.time }} min</p>
+        <p *ngIf="task.timeRemaining > 0">Tempo restante: {{ formatTime(task.timeRemaining) }}</p>
+        <p *ngIf="task.timeRemaining <= 0">Tarefa concluída! 🎉</p>
+      </ion-label>
+      <ion-button (click)="toggleTimer(task)">
+        {{ task.interval ? 'Pause' : task.timeRemaining <= 0 ? 'Recomeçar' : 'Play' }}
+      </ion-button>
+    </ion-item>
+  </ion-list>
+  
+  <ion-modal #modal>
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="cancel()">Cancelar</ion-button> <!-- Botão para cancelar -->
+          </ion-buttons>
+          <ion-title>Criar Tarefa</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="confirm()" [strong]="true">Confirmar</ion-button> <!-- Botão para confirmar a criação -->
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-item>
+          <ion-input
+            label="Título da Tarefa"
+            labelPlacement="stacked"
+            type="text"
+            placeholder="Insira o título"
+            [(ngModel)]="taskTitle"> <!-- Input para o título da tarefa -->
+          </ion-input>
+        </ion-item>
+  
+        <ion-item>
+          <ion-label>Modelos</ion-label>
+          <ion-select [(ngModel)]="taskModel">
+            <ion-select-option value="modelo1">Estudo</ion-select-option> <!-- Opção de modelo -->
+            <ion-select-option value="modelo2">Treino HIIT</ion-select-option> <!-- Outra opção -->
+          </ion-select>
+        </ion-item>
+  
+        <ion-item>
+          <ion-label>Prioridade</ion-label>
+          <ion-select [(ngModel)]="taskPriority">
+            <ion-select-option value="baixa">Baixa prioridade</ion-select-option>
+            <ion-select-option value="media">Média prioridade</ion-select-option>
+            <ion-select-option value="alta">Alta prioridade</ion-select-option>
+          </ion-select>
+        </ion-item>
+  
+        <ion-item>
+          <ion-input
+            label="Tempo (minutos)"
+            labelPlacement="stacked"
+            type="number"
+            placeholder="Insira o tempo"
+            [(ngModel)]="taskTime"> <!-- Input para o tempo da tarefa -->
+          </ion-input>
+        </ion-item>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+  
+</ion-content>
