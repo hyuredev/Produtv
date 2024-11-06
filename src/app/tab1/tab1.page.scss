@@ -1,22 +1,65 @@
-.task-item {
-    margin-bottom: 10px; // Adiciona um espaço de 10px entre as tarefas
-  }
-  
-  .low-priority {
-    border: 2px solid lightblue;
-    border-radius: 8px;
-  }
-  
-  .medium-priority {
-    border: 2px solid purple;
-    border-radius: 8px;
-  }
-  
-  .high-priority {
-    border: 2px solid red;
-    border-radius: 8px;
-  }
-  
-  .custom-button {
-    height: 50px; /* Ajuste a altura conforme necessário */
-    }
+ion-button {
+  --color: white; /* Cor do texto do botão */
+  --border-radius: 8px; /* Borda arredondada */
+  font-weight: bold; /* Texto em negrito */
+  border-radius: 8px; /* Bordas arredondadas do modal */
+  height: 50px; /* Ajuste a altura conforme necessário */
+}
+
+ion-list {
+  margin-top: 10px; /* Espaçamento superior */
+  background: transparent;
+  padding: 0;
+}
+
+ion-footer{
+  background: transparent;
+}
+
+ion-item {
+  border-radius: 8px; /* Bordas arredondadas para itens */
+  margin-bottom: 10px; /* Espaçamento entre itens */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  transition: transform 0.2s; /* Animação ao passar o mouse */
+}
+
+ion-item[lines="full"] {
+  margin-top: 10px; /* Espaço entre os campos do formulário */
+}
+
+ion-item:hover {
+  transform: scale(1.02); /* Leve aumento ao passar o mouse */
+}
+
+h2 {
+  font-size: 1.5em; /* Tamanho da fonte do título */
+  margin: 0; /* Remove margem padrão */
+}
+
+p {
+  margin: 4px 0; /* Margem vertical para os parágrafos */
+}
+
+ion-label {
+  color: #495057; /* Cor do texto */
+}
+
+ion-select {
+  margin-top: 10px; /* Espaçamento superior no select */
+}
+
+ion-modal {
+  border-radius: 8px; /* Bordas arredondadas do modal */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Sombra do modal */
+}
+
+ion-footer {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+
+.error-message {
+  color: #b64b56; /* Vermelho para mensagens de erro */
+  font-weight: bold; /* Negrito para destaque */
+}

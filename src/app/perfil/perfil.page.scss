@@ -1,0 +1,43 @@
+/* perfil.page.scss */
+
+/* Estilo geral do card */
+ion-card {
+    margin: 0; /* Remove margens */
+    padding: 20px; /* Adiciona um pouco de preenchimento interno */
+    background-color: #04249c; /* Azul escuro */
+    border-radius: 0; /* Remove os cantos arredondados */
+    width: 100%; /* Garante que o card preencha a tela horizontalmente */
+  }
+  
+  /* Centraliza todo o conteúdo do card */
+  ion-card-header, ion-card-content {
+    text-align: center; /* Centraliza o texto */
+  }
+  
+  /* Título principal (bem-vindo) */
+  h1, h2{
+    color: white; /* Texto branco */
+  }
+  
+  /* Título principal (bem-vindo) */
+  h1 {
+    font-size: 36px; /* Tamanho da fonte */
+    margin: 10px 0; /* Margem acima e abaixo do título */
+    font-weight: bold; /* Deixa o texto em negrito */
+  }
+  
+  /* Subtítulo */
+  h2 {
+    font-size: 18px; /* Tamanho do subtítulo */
+  }
+  
+  /* Botão de Sair */
+  ion-button {
+    margin: 20px auto; /* Margem superior e inferior, centraliza o botão */
+    width: 90%; /* Largura do botão */
+    border-radius: 8px; /* Cantos arredondados do botão */
+  }
+  
+  .perfil-title {
+    font-size: 25px; /* Tamanho do subtítulo */
+  }

@@ -35,3 +35,22 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+
+ion-header {
+  padding: 17px; /* Adiciona preenchimento interno */
+  }
+
+ion-title{
+  font-size: 32px;
+  font-weight: bold;
+  }
+
+ion-content {
+  --background: linear-gradient(135deg, rgb(33, 38, 76), rgb(242, 103, 235)) !important; /* Degradê diagonal */
+  }
+
+p{
+  color: rgb(255, 255, 255);
+}
+

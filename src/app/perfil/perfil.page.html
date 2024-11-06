@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goToTab1()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="perfil-title">Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="person-circle-outline" style="font-size: 100px;"></ion-icon> <!-- Ícone da pessoa centralizado -->
+      </ion-card-title>
+      <h1>Bem-vindo {{ usuarioLogado.name }}</h1>
+    </ion-card-header>
+    <ion-card-content>
+      <h2>Veja aqui o que você pode fazer com a sua conta</h2>
+    </ion-card-content>
+  </ion-card>
+  
+  <br />
+  <div *ngIf="usuarioLogado">
+    <h2>Perfil</h2>
+    <p><strong>Nome:</strong> {{ usuarioLogado.name }}</p>
+    <p><strong>Email:</strong> {{ usuarioLogado.email }}</p>
+    <p><strong>CPF:</strong> {{ usuarioLogado.cpf }}</p>
+  </div>
+  
+  <!-- Botão de Sair -->
+  <ion-button (click)="logout()" expand="block" color="danger" style="margin-top: 20px;">
+    Sair
+  </ion-button>
+</ion-content>

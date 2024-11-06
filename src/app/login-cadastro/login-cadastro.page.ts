@@ -1,88 +1,79 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { NavController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+import firebase from 'firebase/compat/app';
 
 @Component({
   selector: 'app-login-cadastro',
   templateUrl: './login-cadastro.page.html',
   styleUrls: ['./login-cadastro.page.scss'],
 })
-export class LoginCadastroPage {
+export class LoginCadastroPage{
   @ViewChild(IonModal) modal: IonModal | undefined;
 
   // Propriedades para login
   email: string = '';
   password: string = '';
+  name: string = '';
+  cpf: any = '';
+  showPassword: boolean = false;
 
-  // Propriedades para cadastro
-  signupFullName: string = '';
-  signupCpf: string = '';
-  signupEmail: string = '';
-  signupPhone: string = '';
-  signupPassword: string = '';
-  rememberMe: boolean = false;
+  constructor(
+    private navController: NavController,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
-  constructor(private navController: NavController) {}
+  register() {
+    this.authService.registrarUsuario(this.email, this.password, this.name, this.cpf)
+    .then(() => {
+      console.log("Usuário registrado com sucesso!");
+    })
+    .catch(error => {
+      console.error("Erro no registro:", error);
+    });
+    }
 
+  submitLogin() {
+    this.authService.loginUsuario(this.email, this.password)
+    .then(userData => {
+      if (userData) {
+        console.log("Usuário logado com sucesso!", userData);
+        this.router.navigate(['/tabs']);
+      } else {
+        console.log("Dados do usuário não encontrados.");
+      }
+    })
+  .catch(error => {
+    console.error("Erro no login:", error);
+  });
+  }
+
+  googleLogin() {
+    this.authService.googleLogin();
+  }
+    
   goToTab1() {
     this.navController.navigateForward('/tabs'); // Navega para a aba desejada
   }
 
   cancel() {
     this.modal?.dismiss(null, 'cancel'); // Fecha o modal
-    this.resetSignupForm(); // Limpa o formulário de cadastro
+    this.limparCampos(); // Limpa o formulário de cadastro
   }
 
-  confirm() {
-    console.log('Cadastro enviado:', {
-      fullName: this.signupFullName,
-      cpf: this.signupCpf,
-      email: this.signupEmail,
-      phone: this.signupPhone,
-      password: this.signupPassword,
-    });
-    this.modal?.dismiss(this.signupFullName, 'confirm'); // Fecha o modal e passa o nome completo
-  }
-
-  submitLogin() {
-    // Lógica para processar o login
-    console.log('Login enviado com sucesso!', {
-      email: this.email,
-      password: this.password,
-    });
-    // Aqui você pode implementar a lógica de autenticação
-  }
-
-  submitSignup() {
-    // Lógica para processar o cadastro
-    console.log('Cadastro enviado com sucesso!', {
-      fullName: this.signupFullName,
-      cpf: this.signupCpf,
-      email: this.signupEmail,
-      phone: this.signupPhone,
-      password: this.signupPassword,
-    });
-
-    // Aqui você pode implementar a lógica para enviar os dados para um servidor
-    // Por exemplo, uma chamada para um serviço de autenticação
-
-    // Depois de processar o cadastro, você pode limpar o formulário e fechar o modal
-    this.resetSignupForm();
-    this.modal?.dismiss(this.signupFullName, 'confirm');
+  limparCampos() {
+    this.email = '';
+    this.password = '';
+    this.name = '';
+    this.cpf = '';
   }
 
   openSignupModal() {
     this.modal?.present(); // Abre o modal de cadastro
-  }
-
-  resetSignupForm() {
-    // Limpa os campos do formulário de cadastro
-    this.signupFullName = '';
-    this.signupCpf = '';
-    this.signupEmail = '';
-    this.signupPhone = '';
-    this.signupPassword = '';
   }
 
   onWillDismiss(event: Event) {
@@ -92,7 +83,37 @@ export class LoginCadastroPage {
     }
   }
 
-  toggleCheckbox() {
-    this.rememberMe = !this.rememberMe;
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+  recoverPassword() {
+    if (!this.isValidEmail(this.email)) {
+      alert("Por favor, insira um endereço de e-mail válido.");
+      return;
+    }
+
+    firebase.auth().sendPasswordResetEmail(this.email).then(() => {
+      alert("Um e-mail de redefinição de senha foi enviado para você!");
+    }).catch(error => {
+      let errorMessage = "";
+      switch (error.code) {
+        case 'auth/invalid-email':
+          errorMessage = "E-mail inválido.";
+          break;
+        case 'auth/user-not-found':
+          errorMessage = "Nenhum usuário encontrado com esse e-mail.";
+          break;
+        default:
+          errorMessage = "Ocorreu um erro. Tente novamente.";
+      }
+      alert(errorMessage);
+    });
+  }
+
+  // Método para validar o formato do e-mail
+  isValidEmail(email: string) {
+    const re = /^[^\s@]+@[^\s@]+.[^\s@]+$/;
+    return re.test(email);
   }
 }

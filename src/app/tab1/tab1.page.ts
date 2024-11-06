@@ -1,107 +1,139 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { IonModal } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { TarefaService } from '../services/tarefa.service';
+import { Tarefa } from '../models/tarefa';
 
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss']
 })
-export class Tab1Page {
-  @ViewChild('modal', { static: false }) modal!: IonModal; // Referência ao modal para criar tarefas
-  taskTitle: string = ''; // Título da tarefa
-  taskModel: string = ''; // Modelo da tarefa
-  taskPriority: string = ''; // Prioridade da tarefa
-  taskTime: number = 0; // Tempo para o alarme em minutos
-  tasks: any[] = []; // Array para armazenar as tarefas criadas
-
-  constructor(private navCtrl: NavController) {}
-
-  // Método para abrir o modal de criação de tarefa
-  openModal() {
-    this.taskTitle = ''; // Reseta o título da tarefa
-    this.taskModel = ''; // Reseta o modelo da tarefa
-    this.taskPriority = ''; // Reseta a prioridade da tarefa
-    this.taskTime = 0; // Reseta o tempo da tarefa
-    this.modal?.present(); // Mostra o modal
-  }
-
-  // Método para cancelar a criação da tarefa e fechar o modal
-  cancel() {
-    this.modal?.dismiss(null, 'cancel'); // Fecha o modal
-  }
-
-  // Método para confirmar a criação da tarefa
-  confirm() {
-    if (this.taskTitle && this.taskModel) {
-      const newTask = {
-        title: this.taskTitle,
-        model: this.taskModel,
-        priority: this.taskPriority,
-        time: this.taskTime,
-        timeRemaining: this.taskTime * 60, // Converte para segundos
-        interval: null // Inicializa o intervalo
-      };
-      this.tasks.push(newTask);
-      this.cancel();
-    }
-  }
-
-  // Método para iniciar, pausar ou recomeçar a contagem
-  toggleTimer(task: any) {
-    if (task.interval) {
-      // Se o timer está em andamento, pausar
-      clearInterval(task.interval);
-      delete task.interval;
-    } else {
-      // Se o timer foi pausado ou está em zero, reiniciar ou iniciar
-      if (task.timeRemaining <= 0) {
-        task.timeRemaining = task.time * 60; // Reinicia para o tempo total
-      }
-      task.interval = setInterval(() => {
-        if (task.timeRemaining > 0) {
-          task.timeRemaining--;
-        } else {
-          clearInterval(task.interval);
-          delete task.interval; // Remove a referência ao intervalo quando o timer acabar
-          // Aqui você pode adicionar lógica para notificar o usuário
-        }
-      }, 1000);
-    }
-  }
-
-  // Método para formatar o tempo em minutos e segundos
-  formatTime(seconds: number): string {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes} min ${remainingSeconds} seg`;
-  }
-
-  // Método para definir o estilo da borda da tarefa com base na prioridade
-  getBorderStyle(priority: string): string {
-    let borderColor = '';
-    let borderRadius = '8px'; // Adicione o raio de borda padrão
+export class Tab1Page implements OnInit {
+  @ViewChild('modal', { static: false }) modal!: IonModal;
   
+  tasks: Tarefa[] = [];
+  completedTasks: Tarefa[] = []; // Tarefas concluídas
+  newTaskTitle = '';
+  newTaskDescription = '';
+  newTaskTime = 0;
+  newTaskPriority = 'baixa';
+  errorMessage: string = ''; // Mensagem de erro inicial
+
+  constructor(
+    private navCtrl: NavController,
+    private afAuth: AngularFireAuth,
+    private tarefaService: TarefaService
+  ) {}
+
+  ngOnInit() {
+    // Carrega as tarefas ativas ao inicializar a Tab1
+    this.tasks = this.tarefaService.getTasks();
+  }
+
+  // Carrega as tarefas do serviço
+  private loadTasks() {
+    this.tasks = this.tarefaService.getTasks();
+    this.completedTasks = this.tarefaService.getCompletedTasks();
+    this.tarefaService.tasks$.subscribe((tasks) => {
+      this.tasks = tasks;
+    });
+  }
+
+  // Marca uma tarefa como concluída
+  markTaskAsComplete(taskId: number) {
+    this.tarefaService.completeTask(taskId);
+    this.tasks = this.tarefaService.getTasks(); // Atualiza a lista de tarefas ativas
+  }
+
+  /// Adiciona uma nova tarefa
+  addTask() {
+    // Verifica se os campos obrigatórios foram preenchidos
+    if (!this.newTaskTitle || this.newTaskTime <= 0) {
+      this.errorMessage = 'Por favor, preencha o título e defina um tempo válido.';
+      return;
+    }
+    this.errorMessage = '';
+
+    // Cria a nova tarefa com os dados do formulário
+    const newTask: Tarefa = {
+      id: 0, // O id será definido no TarefaService
+      title: this.newTaskTitle,
+      description: this.newTaskDescription,
+      time: this.newTaskTime * 60, // Converte minutos para segundos
+      priority: this.newTaskPriority,
+      isRunning: false,
+      initialTime: this.newTaskTime * 60,
+      isCompleted: false // Inicialmente, a tarefa não está concluída
+    };
+
+    // Adiciona a nova tarefa através do serviço
+    this.tarefaService.addTask(newTask);
+    this.modal.dismiss(); // Fecha o modal após adicionar a tarefa
+    this.resetForm(); // Reinicia os campos do formulário
+  }
+
+
+  // Controle de tarefas (play, pause, reset)
+  play(taskId: number) {
+    this.tarefaService.playTask(taskId);
+  }
+
+  pause(taskId: number) {
+    this.tarefaService.pauseTask(taskId);
+  }
+
+  reset(taskId: number) {
+    this.tarefaService.resetTask(taskId);
+  }
+
+  // Edição de tarefas
+  edit(task: Tarefa) {
+    task.isEditing = true;
+  }
+
+  save(task: Tarefa) {
+    task.isEditing = false;
+    this.tarefaService.editTask(task);
+  }
+
+  delete(taskId: number) {
+    this.tarefaService.deleteTask(taskId);
+    this.loadTasks(); // Atualiza a lista após a exclusão
+  }
+
+  // Reseta o formulário
+  private resetForm() {
+    this.newTaskTitle = '';
+    this.newTaskDescription = '';
+    this.newTaskTime = 0;
+    this.newTaskPriority = 'baixa'; // Valor padrão
+  }
+
+  // Define o estilo da borda com base na prioridade
+  getBorderStyle(priority: string) {
     switch (priority) {
-      case 'baixa':
-        borderColor = 'lightblue'; // Bordas azuis para prioridade baixa
-        break;
-      case 'media':
-        borderColor = 'purple'; // Bordas roxas para prioridade média
-        break;
       case 'alta':
-        borderColor = 'red'; // Bordas vermelhas para prioridade alta
-        break;
+        return '2px solid red';
+      case 'media':
+        return '2px solid yellow';
       default:
-        borderColor = 'transparent'; // Sem borda para prioridade não definida
-        borderRadius = '0'; // Sem arredondamento
+        return '2px solid green';
     }
-  
-    return `2px solid ${borderColor}; border-radius: ${borderRadius};`;
   }
 
-  // Método para navegar para a página de perfil
+  cancel() {
+    this.modal?.dismiss(null, 'cancel');
+  }
+
   openProfile() {
-    this.navCtrl.navigateForward('/login-cadastro'); // Navega para a página de login/cadastro
+    this.afAuth.authState.subscribe((user) => {
+      if (user) {
+        this.navCtrl.navigateForward('/perfil');
+      } else {
+        this.navCtrl.navigateForward('/login-cadastro');
+      }
+    });
   }
 }

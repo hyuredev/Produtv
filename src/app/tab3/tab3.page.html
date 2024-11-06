@@ -1,25 +1,67 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title slot="start">
-      Produtividade
-    </ion-title>
-
-    <img src="assets/img/bicho.png" alt="Logo" style="max-height: 35px; margin-left: -19.5px;"/>
-
+    <ion-title slot="start">Produtividade</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="openProfile()">
-        <ion-icon name="person-circle-outline" style="font-size: 42px; margin-top: 2px;"></ion-icon>
+        <ion-icon name="person-circle-outline" style="font-size: 48px"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+  <!-- Meta Semanal -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Meta Semanal</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="week-goals">
+        <ion-chip *ngFor="let day of weekDays">
+          <ion-label>{{ day }}</ion-label>
+        </ion-chip>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Tarefas Completas e Tempo Produtivo -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Resumo da Produtividade</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Tarefas Completas: {{ completedTasks }}</p>
+      <p>Tempo Total Produtivo: {{ formatTime(totalProductiveTime) }}</p>
+    </ion-card-content>
+  </ion-card>
+
+    <ion-list>
+      <ion-item *ngFor="let task of completedTasks">
+        <ion-label>
+          <h2>{{ task.title }}</h2>
+          <p>{{ task.description }}</p>
+          <p>Tempo inicial: {{ task.initialTime / 60 }} minutos</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+  <!-- Atividades Recentes -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Atividades Recentes</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let activity of recentActivities">
+          <ion-label>
+            <h2>{{ activity.title }}</h2>
+            <p>{{ activity.description }}</p>
+            <p>Tempo Gasto: {{ formatTime(activity.timeSpent) }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>

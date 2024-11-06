@@ -10,50 +10,54 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <div style="text-align: center; margin-top: 10px;">
-    <ion-icon name="person-circle" style="font-size: 200px;"></ion-icon>
+  <div style="text-align: center; margin-top: 10px; margin-bottom: 30px;">
+    <img src="../assets/img/imglogin.png" alt="Descrição da Imagem" style="width: 200px; height: auto;">
   </div>
-
-  <div id="input-item">
+  <ion-item>
+    <ion-label position="stacked">Email</ion-label>
     <ion-input
-      label="Email"
-      labelPlacement="stacked"
       type="email"
       placeholder="Digite seu email"
-      [(ngModel)]="email">
+      [(ngModel)]="email"
+      required>
     </ion-input>
-  </div>
-  
-  <div id="input-item">
-    <ion-input
-      label="Password"
-      labelPlacement="stacked"
-      type="password"
-      placeholder="Digite sua senha"
-      [(ngModel)]="password">
-      <ion-input-password-toggle slot="end"></ion-input-password-toggle>
-    </ion-input>
-  </div>
-
-  <ion-item class="remember-forgot">
-    <ion-label class="remember-label" (click)="toggleCheckbox()">
-      <ion-checkbox id="remember-me" [(ngModel)]="rememberMe" slot="start"></ion-checkbox>
-      Lembrar de mim
-    </ion-label>
-    
-    <ion-button fill="clear" slot="end" routerLink="#" class="forgot-password">
-      Esqueceu a senha?
-    </ion-button>
   </ion-item>
 
+  <ion-item>
+    <ion-label position="stacked">Senha</ion-label>
+    <ion-input
+      type="password"
+      placeholder="Digite sua senha"
+      [(ngModel)]="password"
+      required>
+      <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+    </ion-input>
+  </ion-item>
+
+
+  <div class="remember-forgot">
+    <ion-button fill="clear" slot="end" (click)="recoverPassword()" class="forgot-password" style="color: white;">
+      Esqueceu a senha?
+    </ion-button>
+  </div>
+
   <!-- Botão de envio -->
-  <ion-button expand="block" (click)="submitLogin()" class="custom-button">
-    Entrar
+  <ion-button id="open-toast" expand="block" (click)="submitLogin()" class="custom-button">
+    Continuar
+  </ion-button>
+
+  <p style="text-align: center; margin: 10px 0;">Ou continuar com</p>
+
+  <ion-button class="google-login-btn" (click)="googleLogin()" style="background-color: whitesmoke;">
+    <img src="assets/img/icon-google.png" alt="Google logo" class="google-logo">
+    Login com Google
   </ion-button>
 
   <div style="text-align: center; margin-top: 20px;">
     <p>Não tem uma conta? <a id="open-modal" (click)="openSignupModal()" style="color: inherit; text-decoration: underline; cursor: pointer;">Cadastre-se</a></p>
   </div>
+
+  <ion-toast trigger="open-toast" message="Login realizado com sucesso!" [duration]="3000" icon="checkmark-circle"></ion-toast>
 
   <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
     <ng-template>
@@ -64,77 +68,63 @@
               <ion-icon name="chevron-back-outline"></ion-icon>
             </ion-button>
           </ion-buttons>
-          <ion-title>Crie sua conta</ion-title>
+          <ion-title>Cadastre-se</ion-title>
         </ion-toolbar>
       </ion-header>
 
       <ion-content class="ion-padding">
-        <div class="modal-image-container">
-          <div style="text-align: center; margin-top: 10px;">
-            <ion-icon name="person-circle" style="font-size: 150px; margin-bottom: 30px;"></ion-icon>
+
+          <div style="text-align: center; margin-top: 10px; margin-bottom: 30px;">
+            <img src="../assets/img/imgcadastro.png" alt="Descrição da Imagem" style="width: 200px; height: auto;">
           </div>
-          <h1 class="modal-title">Cadastre-se</h1>
-        </div>
 
-        <div id="input-item">
+        <ion-item id="input-item">
+          <ion-label position="stacked">Nome</ion-label>
           <ion-input
-            label="Nome completo"
             type="text"
-            labelPlacement="stacked"
-            placeholder="Digite seu nome completo"
-            [(ngModel)]="signupFullName"
-            [counter]="true"
-            maxlength="80">
+            placeholder="Digite seu nome"
+            [(ngModel)]="name"
+            required>
           </ion-input>
-        </div>  
-        
-        <div id="input-item">
+        </ion-item>
+
+        <ion-item id="input-item">
+          <ion-label position="stacked">CPF</ion-label>
           <ion-input
-            label="CPF"
-            labelPlacement="stacked"
+            type="text"
             placeholder="Digite seu CPF"
-            [(ngModel)]="signupCpf"
-            [counter]="true"
-            maxlength="11">
+            [(ngModel)]="cpf"
+            maxlength="14"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d{2})$/, '$1-$2');"
+            required>
           </ion-input>
-        </div>
+        </ion-item>
 
-        <div id="input-item">    
+        <ion-item id="input-item">
+          <ion-label position="stacked">Email</ion-label>
           <ion-input
-            label="Email"
             type="email"
-            labelPlacement="stacked"
             placeholder="Digite seu email"
-            [(ngModel)]="signupEmail"
-            [counter]="true"
-            maxlength="64">
+            [(ngModel)]="email"
+            maxlength="64"
+            required>
           </ion-input>
-        </div>
+        </ion-item>
 
-        <div id="input-item">  
+        <ion-item id="input-item">
+          <ion-label position="stacked">Senha</ion-label>
           <ion-input
-            label="Celular"
-            labelPlacement="stacked"
-            placeholder="Digite seu celular"
-            [(ngModel)]="signupPhone"
-            [counter]="true"
-            maxlength="11">
-          </ion-input>
-        </div>
-
-        <div id="input-item">  
-          <ion-input
-            label="Senha"
-            labelPlacement="stacked"
+            type="password"
             placeholder="Digite sua senha"
-            [(ngModel)]="signupPassword"
-            [counter]="true"
-            maxlength="20">
+            [(ngModel)]="password"
+            maxlength="20"
+            required>
+            <ion-input-password-toggle slot="end"></ion-input-password-toggle>
           </ion-input>
-        </div>
+        </ion-item>
 
         <!-- Botão de cadastro -->
-        <ion-button expand="block" (click)="submitSignup()" class="custom-button" style="margin-top: 20px;">
+        <ion-button expand="block" (click)="register()" class="custom-button" style="margin-top: 20px;">
           Cadastrar
         </ion-button>
       </ion-content>

@@ -10,7 +10,10 @@ import { CalendarService } from '../calendar.service';
 export class Tab2Page implements OnInit {
   holidays: any[] = [];
 
-  constructor(private navCtrl: NavController, private calendarService: CalendarService) {}
+  constructor(
+    private navCtrl: NavController, 
+    private calendarService: CalendarService
+  ) {}
 
   ngOnInit() {
     this.loadHolidays();

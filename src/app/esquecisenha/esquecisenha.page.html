@@ -1,0 +1,40 @@
+
+
+<!-- Conteúdo principal do aplicativo -->
+<ion-content class="ion-padding">
+  <!-- Container para o formulário de recuperação de senha, centralizado vertical e horizontalmente -->
+  <div class="login-container" style="display: flex; justify-content: center; align-items: center; height: 85vh; margin-top: -130px;">
+    <ion-card>
+      <!-- Cabeçalho do cartão -->
+      <ion-card-header>
+        <!-- Título do cartão -->
+        <ion-card-title style="text-align: center;">Esqueceu sua senha?</ion-card-title>
+        <!-- Subtítulo do cartão com instruções -->
+        <ion-card-subtitle style="text-align: center; margin-top: 20px; margin-bottom: 25px;">
+          Enviaremos um e-mail com instruções de como redefinir sua senha.
+        </ion-card-subtitle>
+      </ion-card-header>
+
+      <!-- Conteúdo do cartão -->
+      <ion-card-content>
+        <!-- Formulário de recuperação de senha -->
+        <form>
+          <!-- Campo para inserir o e-mail, com estilo personalizado -->
+          <ion-item class="custom-input">
+            <ion-input type="text" placeholder="E-mail" maxlength="40" required style="margin-top: -10px;"></ion-input>
+          </ion-item>
+
+          <!-- Centro do texto (pode ser utilizado para mensagens futuras) -->
+          <div class="ion-text-center">
+            <ion-text>
+              <!-- Espaço reservado para texto, se necessário -->
+            </ion-text>
+          </div>
+
+          <!-- Botão de envio do formulário, que chama a função 'navigateToLogin()' ao ser clicado -->
+          <ion-button expand="full" type="submit" style="margin-top: 30px;" >Enviar</ion-button>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
